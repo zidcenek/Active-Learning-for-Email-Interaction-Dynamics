@@ -1,6 +1,6 @@
-# Active Learning for Email Interaction Dynamics
+# Active Recommendation for Email Outreach Dynamics
 
-Authors: anonymous (under a double blind review)
+Authors: anonymous (under a double-blind review)
 
 ## Installation
 Pre-requisites: `Python 3.11`
@@ -23,7 +23,7 @@ Pre-requisites: `Python 3.11`
    ```python3 -u experiment_utils/test_any_model.py --model contextual_bandit --sender_id 230711124317191757 --experiment_version 20250524-152200 --repetitions 10 --split_sizes 10;```
 
 
-## Baselines overview
+## Baseline Overview
 
 Our experiments were performed on an
 anonymized dataset (which we make publicly available to the community) containing 131, 918 users, 160 templates, and 14, 908, 085
