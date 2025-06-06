@@ -23,38 +23,63 @@ Pre-requisites: `Python 3.11`
    ```python3 -u experiment_utils/test_any_model.py --model contextual_bandit --sender_id 230711124317191757 --experiment_version 20250524-152200 --repetitions 10 --split_sizes 10;```
 
 
+## Our Method
+Hyperparameters of the autoencoder We perform a grid search for the autoencoder validated 
+with fixed parameters for the contextual model. We test the following parameters 
+dimension of the intermediate layer $d \in \{8, 12, 16\}$, number of epochs $epochs \in \{20, 30\}$, 
+learning rate $lr \in \{0.001, 0.003, 0.01\}$, positive class weight for class imbalance 
+$weights \in \{5, 20, 100, 200\}$. We use the Adam optimizer with weight decay 
+$wd\in\{10e^{-4}, 10e^{-5}\}$ and exponential learning rate decay with $\gamma_{decay}:=0.97$.
+
+Hyperparameters of the contextual model With a fixed model from Step 1, we perform another 
+grid search focusing on hyperparameters of the contextual model with Thompson Sampling. 
+We focus on the following hyperparameters: We set the alpha parameter at 
+$\alpha \in \{0.1, 0.2, 0.3\}$, the exploration / exploitation trade-off parameter at 
+$G \in \{1, 10, 100, 1000, 10000\}$. We set the deadline $T$ according to the values of the 
+real-world scenario (in hours) $T\in\{12, 24, 48\}$; $b\in\{6,12,24\}$ number of batches sent 
+by $T$, and $\tau \in \{0.05, 0.1, 0.15\}$ representing the percentage of users reached by time $T$.
+
+In the initial phase, we do not consider the exact time to open for the user. 
+However, we sample an exponential distribution, simulating user behavior with 
+$\lambda_{tto}=1/time\_to\_open$ for each combination of user-template separately. 
+
 ## Baseline Overview
 
 Our experiments were performed on an
-anonymized dataset (which we make publicly available to the community) containing 131, 918 users, 160 templates, and 14, 908, 085
-email sendings observed over the course of 12 months (with 𝑇 = 48).
+anonymized dataset (which we make publicly available to the community) containing 131,918 users, 160 templates, and 14,908,085
+email sendings observed over the course of 12 months (with $T=48$).
 The open rate is 9.1%, resulting in a matrix density of approximately
 70.6%. For evaluation, we split the dataset into three disjoint parts:
 the last 10 templates for the test set, the preceding 5 for validation,
 and the remaining templates for training.
 We compare our method with eight baselines, each with its own
-hyperparameter tuning. **FMFC-DB** [1]: 𝜀 ∈ {0.01, 0.03, 0.05, 0.08},
-learning rate in 𝑙𝑟 ∈ {0.01, 0.05}, epochs in 𝑒 ∈ {40, 60}, feature
-dimension 𝑑 ∈ {4, 6}, and sample rate 𝑠 = 1.0. **FMPSAL** and
-**FMRSAL** [1]: latent dimension 𝑘 ∈ {16, 32, 64}, learning rate
-in 𝑙𝑟 ∈ {0.001, 0.005, 0.01}, epochs in 𝑒 ∈ {20, 30, 40}, and bootstrap ratio 𝑠 ∈ {0.3, 0.5, 0.7}. 
+hyperparameter tuning. **FMFC-DB** [1]: $\epsilon\in\{0.01, 0.03, 0.05, 0.08\}$,
+learning rate in $lr\in\{0.01,0.05\}$, epochs in $e\in\{40,60\}$, feature
+dimension $d\in\{4,6\}$, and sample rate $s=1.0$. **FMPSAL** and
+**FMRSAL** [1]: latent dimension $k\in\{16, 32, 64\}$, learning rate
+in$lr \in \{0.001, 0.005, 0.01\}$, $e \in \{20, 30, 40\}$, and bootstrap ratio $s \in \{0.3, 0.5, 0.7\}$. 
 **FactorUCB** [2] latent dimension
-𝑘 ∈ {16, 32, 64}, regularization 𝜆 ∈ {10−3, 10−2, 10−1}, epochs in
-{10, 20, 30}, and exploration factor 𝛼 ∈ {0.1, 0.5, 1.0}. **MBRL** [3]:
-𝛾 ∈ {0.7, 0.8, 0.9} and 𝜅 ∈ {0.2, 0.4, 0.6, 0.8}. **DDQN** [4]: layer
-sizes 𝑑𝑢𝑠𝑒𝑟 ∈ {32, 64, 128}, embedding size 𝑑𝑡𝑒𝑚𝑝𝑙𝑎𝑡𝑒 ∈ {8, 16},
-hidden dimensions 𝑑ℎ𝑖𝑑𝑑𝑒𝑛 ∈ {16, 32}, epochs in 𝑒 ∈ {5, 10, 20},
-and the factor 𝛾 ∈ {0.25, 0.4, 0.7, 0.9}. Since side information is not
+$k \in \{16, 32, 64\}$, regularization $\lambda \in \{10^{-3}, 10^{-2}, 10^{-1}\}$, 
+epochs in $\{10, 20, 30\}$, and exploration factor $\alpha \in \{0.1, 0.5, 1.0\}$.  
+**MBRL** [3]: discount factor $\gamma \in \{0.7, 0.8, 0.9\}$ and parameter 
+$\kappa \in \{0.2, 0.4, 0.6, 0.8\}$. **DDQN** [4]: Layer sizes 
+$d_{\text{user}} \in \{32, 64, 128\}$, embedding size 
+$d_{\text{template}} \in \{8, 16\}$, hidden dimensions 
+$d_{\text{hidden}} \in \{16, 32\}$, epochs $e \in \{5, 10, 20\}$, and 
+discount factor $\gamma \in \{0.25, 0.4, 0.7, 0.9\}$. Since side information is not
 available, we use trainable user and template embeddings. As our
 model is based on Thompson Sampling (TS) [5], we perform an
 ablation by using the vanilla algorithm, setting 𝛼 and 𝛽 according
 to the observed counts of openings. Random: an algorithm that
 selects users uniformly at random.
-For our method, we set 𝑑 ∈ {8, 12, 16}, 𝛼 ∈ {0.1, 0.2, 0.3}, and the
-trade-off parameter 𝐺 ∈ {100, · · · 104}. For the autoencoder training,
-we use the Adam optimizer with weight decay in 𝑤𝑑 ∈ {10−4, 10−5}
-and an exponential learning rate decay factor of 0.97
 
+[//]: # (For our method, we set $d \in \{8, 12, 16\}$, $\alpha \in \{0.1, 0.2, 0.3\}$, )
+
+[//]: # (and trade-off parameter $G \in \{100,101,102,103,104\}$. For the autoencoder training, )
+
+[//]: # (we use the Adam optimizer with weight decay $wd \in \{10^{-4}, 10^{-5}\}$ )
+
+[//]: # (and an exponential learning rate decay factor of $0.97$.)
 
 [1] Yu Zhu, Jinghao Lin, Shibi He, Beidou Wang, Ziyu Guan, Haifeng Liu, and Deng
 Cai. 2019. Addressing the item cold-start problem by attribute-driven active
