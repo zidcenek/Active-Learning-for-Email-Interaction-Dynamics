@@ -761,7 +761,7 @@ def compute_recall_at_k_percent_list(
 
 # Example usage / main
 if __name__ == "__main__":
-    sender_id =230711124317191757  # 240812112031380872
+    sender_id = ...
     logger.info(f"Loading dataset for sender_id {sender_id}...")
     datasets = AutoencoderDataset.from_disk_data_split(sender_id, split_sizes=[5, 10], remove_users_below_n_opens=1)
     train = datasets[0]

@@ -177,7 +177,7 @@ class AutoencoderDataset(Dataset):
             user_id_map = {user_id: i for i, user_id in enumerate(user_ids)}
             self._user_id_mapper = user_id_map
 
-        self.mails = self.mails[self.mails['user_id'].isin(user_ids)]  # TODO: resolve this in a better way
+        self.mails = self.mails[self.mails['user_id'].isin(user_ids)]
         self.mails['user_id'] = self.mails['user_id'].map(self._user_id_mapper)
 
         # For each mailshot we have to create a sequence of mails and their opened binary vector

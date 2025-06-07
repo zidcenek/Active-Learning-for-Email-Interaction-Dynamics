@@ -1,5 +1,5 @@
 {
-    "sender_id": 230711124317191757,
+    "sender_id": 1,
     "model": "contextual_bandit",
     "version": "20250606-111137",
     "split_sizes": [

@@ -318,7 +318,7 @@ class AbstractContextualModel(ABC):
         """
         # Create experiment folder
         logger.info(f"Starting experiment {exp_number}...")
-        exp_folder = results_folder / f"exp_{exp_number}_0"  # TODO: repetitions
+        exp_folder = results_folder / f"exp_{exp_number}"
         exp_folder.mkdir(exist_ok=True, parents=True)
         
         try:

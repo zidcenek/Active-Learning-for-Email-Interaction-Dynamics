@@ -12,15 +12,15 @@ Pre-requisites: `Python 3.11`
    - the parquet file should contain a `pd.DataFrame` with the following columns: `[user_id, mailshot_id, opened, time_to_open]`
 2. Create a config for grid search
    - Option A: manually in `PROJECT_ROOT/experiments/{NAME_OF_DATASET}/{EXPERIMENT_METHOD}/{VERSION}/grid_search_config.json`
-       (there is an example in [grid_search_config.json](experiments/230711124317191757/contextual_bandit/20250606-111137/grid_search_config.json))
-   - Option B: using script: e.g. `python3 ./experiment_utils/create_grid_search_config.py --model contextual_bandit --sender_id 230711124317191757;`
+       (there is an example in [grid_search_config.json](experiments/1/contextual_bandit/20250606-111137/grid_search_config.json))
+   - Option B: using script: e.g. `python3 ./experiment_utils/create_grid_search_config.py --model contextual_bandit --sender_id 1;`
 3. Run a grid search:
    - Run the grid search script `run_grid_search.py` e.g. 
-   `python3 ./experiment_utils/run_grid_search.py --model contextual_bandit --sender_id 230711124317191757 --version 20250606-111137 --n_jobs 1 --n_samples 1 --split_sizes 5 10;`
+   `python3 ./experiment_utils/run_grid_search.py --model contextual_bandit --sender_id 1 --version 20250606-111137 --n_jobs 1 --n_samples 1 --split_sizes 5 10;`
 4. Run experiments on test set:
    - Create a test config in `PROJECT_ROOT/experiments/test_set/{NAME_OF_DATASET}/{EXPERIMENT_METHOD}/{VERSION}/config.json`
    - Run test script:
-   ```python3 -u experiment_utils/test_any_model.py --model contextual_bandit --sender_id 230711124317191757 --experiment_version 20250524-152200 --repetitions 10 --split_sizes 10;```
+   ```python3 -u experiment_utils/test_any_model.py --model contextual_bandit --sender_id 1 --experiment_version 20250524-152200 --repetitions 10 --split_sizes 10;```
 
 
 ## Our Method

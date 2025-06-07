@@ -207,7 +207,7 @@ class ShallowAutoencoder(nn.Module):
         diag_vals = (self.E * self.D).sum(dim=1)
         hidden = X @ self.E
         out = hidden @ self.D.t()
-        out = out - (X * diag_vals)  # TODO: uncomment this
+        out = out - (X * diag_vals)
         return torch.sigmoid(out)
 
     def fit(
