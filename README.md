@@ -29,9 +29,9 @@ with fixed parameters for the contextual model. Hyperparameters of the contextua
 we perform another grid search focusing on hyperparameters of the contextual model with Thompson Sampling.
 For our method, we search for $d \in \{8, 12, 16\}$, $b \in \{12,24, 48\}$, $\alpha \in \{0.1, 0.2, 0.3\}$, 
 and the trade-off parameter $G \in \{10^0, \cdots, 10^4\}$. For autoencoder training, we use Adam optimizer, weight decay 
-in $wd\in\{10^{-4}, 10^{-5}\}$, learning rate $lr \in \{0.001, 0.003, 0.01\}$, number of epochs $epochs \in \{20, 30\}$, 
+in $wd\in\{10^{-4}, 10^{-5}\}$, learning rate $lr \in \{0.001, 0.003, 0.01\}$, number of epochs $e \in \{20, 30\}$, 
 and exponential learning rate decay of $0.97$.
-In the initial phase, we do not consider the exact time to open for the user. 
+In the active learning phase, we do not consider the exact time to open for the user. 
 However, we sample an exponential distribution, simulating user behavior with 
 $\lambda_{tto}=1/time\_to\_open$ for each combination of user-template separately. 
 
