@@ -24,9 +24,13 @@ Pre-requisites: `Python 3.11`
 
 
 ## Our Method
+Hyperparameters of the autoencoder We perform a grid search for the autoencoder validated 
+with fixed parameters for the contextual model. Hyperparameters of the contextual model With a fixed model from Step 1, 
+we perform another grid search focusing on hyperparameters of the contextual model with Thompson Sampling.
 For our method, we search for $d \in \{8, 12, 16\}$, $b \in \{12,24, 48\}$, $\alpha \in \{0.1, 0.2, 0.3\}$, 
 and the trade-off parameter $G \in \{10^0, \cdots, 10^4\}$. For autoencoder training, we use Adam optimizer, weight decay 
-in $wd\in\{10^{-4}, 10^{-5}\}$, learning rate $lr \in \{0.001, 0.003, 0.01\}$, and exponential learning rate decay of $0.97$.
+in $wd\in\{10^{-4}, 10^{-5}\}$, learning rate $lr \in \{0.001, 0.003, 0.01\}$, number of epochs $epochs \in \{20, 30\}$, 
+and exponential learning rate decay of $0.97$.
 In the initial phase, we do not consider the exact time to open for the user. 
 However, we sample an exponential distribution, simulating user behavior with 
 $\lambda_{tto}=1/time\_to\_open$ for each combination of user-template separately. 
@@ -61,6 +65,7 @@ ablation by using the vanilla algorithm, setting 𝛼 and 𝛽 according
 to the observed counts of openings. Random: an algorithm that
 selects users uniformly at random.
 
+## References
 [1] Yu Zhu, Jinghao Lin, Shibi He, Beidou Wang, Ziyu Guan, Haifeng Liu, and Deng
 Cai. 2019. Addressing the item cold-start problem by attribute-driven active
 learning. IEEE Transactions on Knowledge and Data Engineering 32, 4 (2019),
