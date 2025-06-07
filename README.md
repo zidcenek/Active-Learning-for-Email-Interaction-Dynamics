@@ -24,21 +24,9 @@ Pre-requisites: `Python 3.11`
 
 
 ## Our Method
-Hyperparameters of the autoencoder We perform a grid search for the autoencoder validated 
-with fixed parameters for the contextual model. We test the following parameters 
-dimension of the intermediate layer $d \in \{8, 12, 16\}$, number of epochs $epochs \in \{20, 30\}$, 
-learning rate $lr \in \{0.001, 0.003, 0.01\}$, positive class weight for class imbalance 
-$weights \in \{5, 20, 100, 200\}$. We use the Adam optimizer with weight decay 
-$wd\in\{10e^{-4}, 10e^{-5}\}$ and exponential learning rate decay with $\gamma_{decay}:=0.97$.
-
-Hyperparameters of the contextual model With a fixed model from Step 1, we perform another 
-grid search focusing on hyperparameters of the contextual model with Thompson Sampling. 
-We focus on the following hyperparameters: We set the alpha parameter at 
-$\alpha \in \{0.1, 0.2, 0.3\}$, the exploration / exploitation trade-off parameter at 
-$G \in \{1, 10, 100, 1000, 10000\}$. We set the deadline $T$ according to the values of the 
-real-world scenario (in hours) $T\in\{12, 24, 48\}$; $b\in\{6,12,24\}$ number of batches sent 
-by $T$, and $\tau \in \{0.05, 0.1, 0.15\}$ representing the percentage of users reached by time $T$.
-
+For our method, we search for $d \in \{8, 12, 16\}$, $b \in \{12,24, 48\}$, $\alpha \in \{0.1, 0.2, 0.3\}$, 
+and the trade-off parameter $G \in \{10^0, \cdots, 10^4\}$. For autoencoder training, we use Adam optimizer, weight decay 
+in $wd\in\{10^{-4}, 10^{-5}\}$, learning rate $lr \in \{0.001, 0.003, 0.01\}$, and exponential learning rate decay of $0.97$.
 In the initial phase, we do not consider the exact time to open for the user. 
 However, we sample an exponential distribution, simulating user behavior with 
 $\lambda_{tto}=1/time\_to\_open$ for each combination of user-template separately. 
@@ -73,14 +61,6 @@ ablation by using the vanilla algorithm, setting 𝛼 and 𝛽 according
 to the observed counts of openings. Random: an algorithm that
 selects users uniformly at random.
 
-[//]: # (For our method, we set $d \in \{8, 12, 16\}$, $\alpha \in \{0.1, 0.2, 0.3\}$, )
-
-[//]: # (and trade-off parameter $G \in \{100,101,102,103,104\}$. For the autoencoder training, )
-
-[//]: # (we use the Adam optimizer with weight decay $wd \in \{10^{-4}, 10^{-5}\}$ )
-
-[//]: # (and an exponential learning rate decay factor of $0.97$.)
-
 [1] Yu Zhu, Jinghao Lin, Shibi He, Beidou Wang, Ziyu Guan, Haifeng Liu, and Deng
 Cai. 2019. Addressing the item cold-start problem by attribute-driven active
 learning. IEEE Transactions on Knowledge and Data Engineering 32, 4 (2019),
@@ -102,3 +82,6 @@ arXiv:2202.03867 [cs.LG] https://arxiv.org/abs/2202.03867
 [5] Daniel J Russo, Benjamin Van Roy, Abbas Kazerouni, Ian Osband, Zheng Wen,
 et al. 2018. A tutorial on thompson sampling. Foundations and Trends® in
 Machine Learning 11, 1 (2018), 1–96.
+
+
+
