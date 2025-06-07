@@ -65,6 +65,7 @@ ablation by using the vanilla algorithm, setting 𝛼 and 𝛽 according
 to the observed counts of openings. Random: an algorithm that
 selects users uniformly at random.
 
+
 ## References
 [1] Yu Zhu, Jinghao Lin, Shibi He, Beidou Wang, Ziyu Guan, Haifeng Liu, and Deng
 Cai. 2019. Addressing the item cold-start problem by attribute-driven active
