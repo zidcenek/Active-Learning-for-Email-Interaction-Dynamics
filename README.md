@@ -65,6 +65,16 @@ ablation by using the vanilla algorithm, setting 𝛼 and 𝛽 according
 to the observed counts of openings. Random: an algorithm that
 selects users uniformly at random.
 
+## Dataset
+Our experiments were performed on a new Mailprofiler’s XCampaign dataset (XCampaign is an email
+campaign management platform developed by Mailprofiler) containing 14 908 085 messages sent over the course of 12 months (with
+𝑇= 48), 131 918 recipients and 160 templates. For each message sent, we collected the recipient ID, the template ID, and (in the case
+of an open) the time between sending and opening. The open rate is 9.1%. For evaluation, we split the dataset into three chronologically
+disjoint parts: the last 10 templates for the test set, the preceding 5 for validation, and the remaining templates for training. We do not
+have access to any kind of side information.
+
+The dataset is available at [this Google drive](https://drive.google.com/file/d/1M69F8k6ioC6h8j57TxsK9cbeP06eUrbX/view?usp=sharing).
+
 
 ## References
 [1] Yu Zhu, Jinghao Lin, Shibi He, Beidou Wang, Ziyu Guan, Haifeng Liu, and Deng
