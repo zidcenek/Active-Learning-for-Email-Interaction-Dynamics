@@ -1,6 +1,14 @@
+[![License: CC-4](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
+
 # Active Recommendation for Email Outreach Dynamics
 
-Authors: anonymous (under a double-blind review)
+Authors: Čeněk Žid, Rodrigo Alves, Pavel Kordík
+
+Affiliation: FIT CTU, Czech Technical University in Prague
+
+This is an official repository for the paper [*Active Recommendation for Email Outreach Dynamics*.](https://dl.acm.org/doi/10.1145/3746252.3760832)
+
+Check the public dataset at [HuggingFace (XCampaign Dataset)](https://huggingface.co/datasets/zidcenek/XCampaignDataset)
 
 ## Installation
 Pre-requisites: `Python 3.11`
@@ -65,16 +73,111 @@ ablation by using the vanilla algorithm, setting 𝛼 and 𝛽 according
 to the observed counts of openings. Random: an algorithm that
 selects users uniformly at random.
 
-## Dataset
-Our experiments were performed on a new Mailprofiler’s XCampaign dataset (XCampaign is an email
-campaign management platform developed by Mailprofiler) containing 14 908 085 messages sent over the course of 12 months (with
-𝑇= 48), 131 918 recipients and 160 templates. For each message sent, we collected the recipient ID, the template ID, and (in the case
-of an open) the time between sending and opening. The open rate is 9.1%. For evaluation, we split the dataset into three chronologically
-disjoint parts: the last 10 templates for the test set, the preceding 5 for validation, and the remaining templates for training. We do not
-have access to any kind of side information.
+---
+# XCampaign Dataset
+## Introduction
+This document describes the Mailprofiler's **XCampaign Dataset** -- provided by Mailprofiler; 
+[XCampaign](https://xcampaign.info/switzerland-en/) represents an email campaign management platform. The dataset was 
+used in our CIKM 2025 paper *Active Recommendation for Email Outreach Dynamics*. The dataset captures user-level 
+interactions with periodic marketing mailshots, including whether an email was opened and the time-to-open (TTO).
 
-The dataset is available at [this Google drive](https://drive.google.com/file/d/1M69F8k6ioC6h8j57TxsK9cbeP06eUrbX/view?usp=sharing).
+## How to Use and Cite
 
+The XCampaign Dataset is made available under the **Creative Commons Attribution 4.0 International License (CC BY 4.0)**.
+
+This license allows you to share and adapt the dataset for any purpose, **including commercial use**, as long as you provide appropriate credit.
+
+If you use this dataset in your work, please **cite the following paper**, which introduced the dataset:
+
+### Plain Text Citation
+> Čeněk Žid, Rodrigo Alves, and Pavel Kordík. 2025. Active Recommendation for Email Outreach Dynamics. In *Proceedings 
+> of the 34th ACM International Conference on Information and Knowledge Management (CIKM '25)}*. Association for 
+> Computing Machinery, New York, NY, USA, 5540–5544. https://doi.org/10.1145/3746252.3760832
+
+### BibTeX Citation
+```bibtex
+@inproceedings{10.1145/3746252.3760832,
+  author = {\v{Z}id, \v{C}en\v{e}k and Kord\'{\i}k, Pavel and Alves, Rodrigo},
+  title = {Active Recommendation for Email Outreach Dynamics},
+  year = {2025},
+  isbn = {9798400720406},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  url = {https://doi.org/10.1145/3746252.3760832},
+  doi = {https://doi.org/10.1145/3746252.3760832},
+  booktitle = {Proceedings of the 34th ACM International Conference on Information and Knowledge Management},
+  pages = {5540–5544},
+  numpages = {5},
+  keywords = {email outreach, reinforcement learning, shallow autoencoder},
+  location = {Seoul, Republic of Korea},
+  series = {CIKM '25}
+}
+```
+
+You can download the dataset using Hugging Face's [datasets library](https://huggingface.co/datasets/xcampaign/xcampaign-dataset).
+```python
+dataset = load_dataset("zidcenek/XCampaignDataset")
+```
+
+## Dataset and Fields
+The **XCampaign Dataset** includes the following fields:
+- `mailshot_id`: (or template id) identifier of the mailshot campaign
+- `user_id`: anonymized recipient identifier
+- `opened`: binary label (\(1\) if opened, \(0\) otherwise)
+- `time_to_open`: time delta between send and open (a parseable string of a timedelta `0 days 09:39:32`)
+
+## Global Statistics
+All statistics below are computed from the full dataset.
+- Rows: 14,908,085; Users: 131,918; Mailshots: 160
+- Global open rate: 9.09%
+- Per-mailshot open rate: $9.13\% \pm 3.58\%$
+- Per-user open rate: mean $12.33\% \pm 20.46\%$
+- Time-to-open (opened only): mean 1d 17h 25m; median 6h 25m
+- Fraction opened within 1h: 25.9%; within 24h: 71.2%; within 7d: 93.0%
+- Sent to users at each mailshot: $93,175 \pm 19,162$
+- Item \(\times\) User interaction matrix density: 70.63%
+
+![Global open rate and distribution of per-user open rates.](./assets/user_open_rate_hist.png)
+Global open rate and distribution of per-user open rates.
+
+## Time to Open (TTO)
+Time-to-open is heavy-tailed: while the median is about 6.4 hours, most opens occur within a week. Specifically, 
+93.0\% of opens arrive within 7 days, so 7.0\% arrive later than 7 days. The plots below are truncated at 7 days to 
+emphasize the main mass of the distribution. The CDF and histogram are shown in Figure~\ref{fig:tto}.
+
+![Distribution of time-to-open for opened emails.](./assets/time_to_open_hist.png)
+Distribution of time-to-open for opened emails.
+
+![CDF of time-to-open for opened emails.](assets/time_to_open_cdf.png)
+CDF of time-to-open for opened emails.
+
+Distribution (left) and CDF (right) of time-to-open for opened emails.
+
+The heavy-tailed TTO suggests robust objectives and appropriate censoring strategies. The two user segments motivate 
+segment-aware priors and exploration strategies; mailshot-level heterogeneity motivates per-mailshot features or random effects.
+
+## Acknowledgements
+Čeněk Žid's research was supported by the Grant Agency of the Czech Technical University (SGS20/213/OHK3/3T/18). 
+We warmly thank *Mailprofiler* for providing the dataset for this research.
+
+<p align="center">
+  <a href="https://fit.cvut.cz/en" target="_blank">
+    <img src="assets/logo-fit-en-modra.jpg" alt="FIT CTU" height="60"/>
+  </a>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://xcampaign.info/switzerland-en/" target="_blank">
+    <img src="assets/Xcampaign_logo.svg" alt="XCampaign" height="60"/>
+  </a>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://www.recombee.com/" target="_blank">
+    <img src="assets/recombee_logo.png" alt="Recombee" height="60"/>
+  </a>
+</p>
+
+## License
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+
+---
 
 ## References
 [1] Yu Zhu, Jinghao Lin, Shibi He, Beidou Wang, Ziyu Guan, Haifeng Liu, and Deng
